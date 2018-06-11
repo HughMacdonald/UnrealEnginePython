@@ -121,4 +121,6 @@ PyObject *py_unreal_engine_unregister_settings(PyObject *, PyObject *);
 
 PyObject *py_unreal_engine_request_play_session(PyObject *, PyObject *);
 PyObject *py_unreal_engine_export_assets(PyObject *, PyObject *);
+
+PyObject *py_unreal_engine_add_toolbar_extension(PyObject *, PyObject *);
 #endif

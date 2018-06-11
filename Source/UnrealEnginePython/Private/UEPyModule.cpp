@@ -434,6 +434,8 @@ static PyMethodDef unreal_engine_methods[] = {
 	{ "unregister_settings", py_unreal_engine_unregister_settings, METH_VARARGS, "" },
 
 	{ "in_editor_capture", py_unreal_engine_in_editor_capture, METH_VARARGS, "" },
+
+	{ "add_toolbar_extension", py_unreal_engine_add_toolbar_extension, METH_VARARGS, "" },
 #endif
 
 	{ "clipboard_copy", py_unreal_engine_clipboard_copy, METH_VARARGS, "" },

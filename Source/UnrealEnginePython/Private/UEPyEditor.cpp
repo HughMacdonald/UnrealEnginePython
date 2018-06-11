@@ -2372,5 +2372,34 @@ PyObject *py_unreal_engine_export_assets(PyObject * self, PyObject * args)
 
 	Py_RETURN_NONE;
 }
+
+void py_unreal_engine_add_toolbar_extension_item(FToolBarBuilder& Builder)
+{
+
+}
+
+PyObject *py_unreal_engine_add_toolbar_extension(PyObject * self, PyObject * args)
+{
+	char *name;
+	int position;
+	if (!PyArg_ParseTuple(args, "si:add_toolbar_extension", &name, &position))
+	{
+		return nullptr;
+	}
+
+	FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
+	FUnrealEnginePythonModule UnrealEnginePythonModule = FModuleManager::LoadModuleChecked<FUnrealEnginePythonModule>("UnrealEnginePython");
+
+	TSharedPtr<class FUICommandList> ToolbarCommandList = MakeShareable(new FUICommandList);
+	// TODO : Populate command list
+
+	TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender);
+	ToolbarExtender->AddToolBarExtension(name, EExtensionHook::After, ToolbarCommandList, FToolBarExtensionDelegate::CreateRaw(UnrealEnginePythonModule, &py_unreal_engine_add_toolbar_extension_item));
+	
+	LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
+
+	Py_RETURN_NONE;
+}
+
 #endif
 
