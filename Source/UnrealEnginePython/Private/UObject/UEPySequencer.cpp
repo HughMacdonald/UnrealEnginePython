@@ -1202,13 +1202,38 @@ PyObject *py_ue_sequencer_import_fbx_transform(ue_PyUObject *self, PyObject * ar
 		ImportOptions->bConvertSceneUnit = bConverteScene;
 		ImportOptions->bForceFrontXAxis = bConverteScene;
 		Py_RETURN_NONE;
-		}
+	}
 
 	FbxImporter->ReleaseScene();
 	ImportOptions->bConvertScene = bConverteScene;
 	ImportOptions->bConvertSceneUnit = bConverteSceneUnit;
 	ImportOptions->bForceFrontXAxis = bForceFrontXAxis;
 	return PyErr_Format(PyExc_Exception, "unable to find specified node in Fbx file");
-	}
+}
+
+PyObject *py_ue_sequencer_camera_track_section_set_camera_guid( ue_PyUObject *, PyObject * )
+{
+    ue_py_check( self );
+
+    char *guid;
+    if( !PyArg_ParseTuple( args, "s:sequencer_camera_track_section_set_camera_guid", &guid ) )
+    {
+        return NULL;
+    }
+
+    if( !self->ue_object->IsA<UMovieSceneCameraCutSection>() )
+        return PyErr_Format( PyExc_Exception, "uobject is not a MovieSceneCameraCutSection" );
+
+    FGuid f_guid;
+    if( !FGuid::Parse( FString( guid ), f_guid ) )
+    {
+        return PyErr_Format( PyExc_Exception, "invalid GUID" );
+    }
+
+    UMovieSceneCameraCutSection *section = (UMovieSceneCameraCutSection *)self->ue_object;
+    section->SetCameraGUID( f_guid );
+    
+    Py_RETURN_NONE;
+}
 #endif
 
